@@ -16,13 +16,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './pages/Home/Home.jsx';
+import Dashboard from './pages/dashboard/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RouteLayout />,
     children: [
-      { path: "/home", element: <Home /> }
+      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/home", element: <Home /> },
     ]
   }
 ])

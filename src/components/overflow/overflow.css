@@ -1,0 +1,42 @@
+.OverFlow .boxs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+
+      .box {
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            padding: 15px;
+            border-radius: 20px;
+            background-color: #CACACA;
+            text-align: center;
+
+            svg {
+                  color: #fff;
+                  width: 30px;
+                  height: 30px;
+                  padding: 15px;
+                  border-radius: 50%;
+                  margin-bottom: 10px;
+            }
+ 
+            &:nth-child(1) svg {
+                  background-color: #E65F2B;
+            }
+
+            &:nth-child(2) svg {
+                  background-color: #D398E7;
+            }
+
+            &:nth-child(3) svg {
+                  background-color: #89B0E7;
+            }
+
+            &:nth-child(4) svg {
+                  background-color: #F0C274;
+            }
+
+            h2 {
+                  line-height: 1;
+            }
+      }
+}

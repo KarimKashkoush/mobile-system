@@ -1,0 +1,15 @@
+.routelayout {
+      main {
+            margin-left: 250px;
+            padding-inline: 10px;
+      }
+}
+
+@media (max-width: 786px) {
+      .routelayout {
+            main {
+                  margin-left: 70px;
+                  padding-left: 10px;
+            }
+      }
+}
