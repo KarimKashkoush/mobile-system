@@ -15,8 +15,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Home from './pages/Home/Home.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
+import AddProducts from './pages/addProducts/AddProducts.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <RouteLayout />,
     children: [
       { path: "/dashboard", element: <Dashboard /> },
-      { path: "/home", element: <Home /> },
+      { path: "/add", element: <AddProducts /> },
     ]
   }
 ])

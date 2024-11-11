@@ -20,11 +20,11 @@ export default function SideBar() {
                               </NavLink>
                         </li>
                         <li>
-                              <NavLink to="./home">
+                              <NavLink to="./add">
                                     <span>
-                                          <FontAwesomeIcon icon="fa-solid fa-chart-line" />
+                                    <FontAwesomeIcon icon="fa-solid fa-plus" />
                                     </span>
-                                    Link
+                                    Add Products
                               </NavLink>
                         </li>
                         <li>
