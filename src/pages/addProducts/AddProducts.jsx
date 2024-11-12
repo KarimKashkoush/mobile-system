@@ -10,7 +10,7 @@ import Row from 'react-bootstrap/Row';
 export default function AddProducts() {
       const [validated, setValidated] = useState(false);
 
-      const handleSubmit = (event) => {ىحة
+      const handleSubmit = (event) => {
             const form = event.currentTarget;
             if (form.checkValidity() === false) {
                   event.preventDefault();
