@@ -73,7 +73,7 @@ export default function AddProducts() {
             if (data) {
                   // التأكد من أن البيانات التي تم مسحها هي نص (أو تحويلها إلى نص إذا كانت كائنات)
                   const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
-                  setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
+                  setSerialNumber(scannedValue.text); // وضع محتوى QR في خانة serial
                   setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
             }
       };
