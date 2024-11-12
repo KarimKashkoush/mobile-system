@@ -1,6 +1,32 @@
 import "./productslist.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getProducts } from "../../store/products";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
 export default function ProductsList() {
+      const dispatch = useDispatch();
+      useEffect(() => {
+            dispatch(getProducts());
+      }, [dispatch]);
+
+      const products = useSelector((state) => state.products.products);
+      const productArray = Object.values(products)
+      console.log(productArray)
+      const data = productArray.map((product, index) => (
+            <tr key={index}>
+                  <td>{index++}</td>
+                  <td>{product.productName}</td>
+                  <td>{product.sellingPrice}</td>
+                  <td>{product.serial}</td>
+                  <td>
+                        <button>Sale</button>
+                        <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
+                        <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
+                  </td>
+            </tr>
+      ))
+
       return (
             <section className="products-list">
                   <section className="table-list">
@@ -15,138 +41,7 @@ export default function ProductsList() {
                                     </tr>
                               </thead>
                               <tbody>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>iphone 16 pro max</td>
-                                          <td>70500</td>
-                                          <td>12345</td>
-                                          <td>
-                                                <button>Sale</button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                                                <button><FontAwesomeIcon icon="fa-solid fa-trash" /></button>
-                                          </td>
-                                    </tr>
+                                    {data}
                               </tbody>
                         </table>
                   </section>

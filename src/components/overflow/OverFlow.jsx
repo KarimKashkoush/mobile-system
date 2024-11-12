@@ -5,7 +5,7 @@ export default function OverFlow() {
       const today = moment();
 
       return (
-            <ssection className="OverFlow">
+            <section className="OverFlow">
                   <section className="boxs">
                         <section className="box">
                               <FontAwesomeIcon icon="fa-solid fa-sack-dollar" />
@@ -28,6 +28,6 @@ export default function OverFlow() {
                               <h2>{today.format('DD/MM/YYYY')}</h2>
                         </section>
                   </section>
-            </ssection>
+            </section>
       )
 }

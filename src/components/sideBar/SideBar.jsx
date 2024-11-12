@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function SideBar() {
       return (
-            <sidebar className="sidebar">
+            <aside className="sidebar">
                   <section className="logo">
                         <NavLink to="/">
                               <span></span>
@@ -44,6 +44,6 @@ export default function SideBar() {
                               </NavLink>
                         </li>
                   </ul>
-            </sidebar>
+            </aside>
       )
 }
