@@ -13,6 +13,7 @@ export default function AddProducts() {
       const [inputValue, setInputValue] = useState('');
       const [serialNumber, setSerialNumber] = useState(''); // حالة جديدة للاحتفاظ بالقيمة المقروءة من QR
       const [showQRScanner, setShowQRScanner] = useState(false); // حالة لإظهار أو إخفاء الكاميرا
+      const [cameraType, setCameraType] = useState('environment'); // حالة لتتبع نوع الكاميرا (environment = الكاميرا الخلفية, user = الكاميرا الأمامية)
 
       // التعامل مع التقديم
       const handleSubmit = (event) => {
@@ -73,13 +74,18 @@ export default function AddProducts() {
             if (data) {
                   // التأكد من أن البيانات التي تم مسحها هي نص (أو تحويلها إلى نص إذا كانت كائنات)
                   const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
-                  setSerialNumber(scannedValue.text); // وضع محتوى QR في خانة serial
+                  setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
                   setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
             }
       };
 
       const handleQRError = (err) => {
             console.error(err);
+      };
+
+      // وظيفة لتبديل الكاميرا
+      const toggleCamera = () => {
+            setCameraType(cameraType === 'environment' ? 'user' : 'environment');
       };
 
       return (
@@ -167,15 +173,18 @@ export default function AddProducts() {
                               <QrScanner
                                     delay={300}
                                     style={{ width: '100%' }}
-                                    facingMode="environment" // تحديد الكاميرا الخلفية
+                                    facingMode={cameraType} // تحديد الكاميرا استنادًا إلى الحالة
                                     onError={handleQRError}
                                     onScan={handleQRScan}
                               />
+
+                              {/* زر تبديل الكاميرا */}
+                              <Button variant="secondary" onClick={toggleCamera}>
+                                    Switch to {cameraType === 'environment' ? 'Front' : 'Back'} Camera
+                              </Button>
+
                               <Button variant="secondary" onClick={() => setShowQRScanner(false)}>
                                     Close Scanner
                               </Button>
                         </div>
                   )}
-            </section>
-      );
-}
