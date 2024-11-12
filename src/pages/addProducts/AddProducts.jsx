@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import QrScanner from 'react-qr-scanner'; // استخدام مكتبة react-qr-scanner بدلاً من react-qr-reader
+import QrScanner from 'react-qr-scanner'; // استخدام مكتبة react-qr-scanner
 
 export default function AddProducts() {
       const [validated, setValidated] = useState(false);
@@ -72,7 +72,6 @@ export default function AddProducts() {
       // التعامل مع QR code الذي تم قراءته
       const handleQRScan = (data) => {
             if (data) {
-                  // التأكد من أن البيانات التي تم مسحها هي نص (أو تحويلها إلى نص إذا كانت كائنات)
                   const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
                   setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
                   setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
@@ -188,3 +187,6 @@ export default function AddProducts() {
                               </Button>
                         </div>
                   )}
+            </section>
+      );
+}
