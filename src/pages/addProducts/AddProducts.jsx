@@ -71,7 +71,9 @@ export default function AddProducts() {
       // التعامل مع QR code الذي تم قراءته
       const handleQRScan = (data) => {
             if (data) {
-                  setSerialNumber(data); // وضع محتوى QR في خانة serial
+                  // التأكد من أن البيانات التي تم مسحها هي نص (أو تحويلها إلى نص إذا كانت كائنات)
+                  const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
+                  setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
                   setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
             }
       };
@@ -149,6 +151,7 @@ export default function AddProducts() {
                                                 type="text"
                                                 placeholder="Serial Number"
                                                 value={serialNumber} // تم ربط القيمة هنا
+                                                onChange={(e) => setSerialNumber(e.target.value)} // تمكين التغيير اليدوي
                                                 onClick={() => setShowQRScanner(true)} // عند الضغط على الحقل نعرض الكاميرا
                                           />
                                     </Form.Group>
@@ -164,6 +167,7 @@ export default function AddProducts() {
                               <QrScanner
                                     delay={300}
                                     style={{ width: '100%' }}
+                                    facingMode="environment" // تحديد الكاميرا الخلفية
                                     onError={handleQRError}
                                     onScan={handleQRScan}
                               />
