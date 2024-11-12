@@ -1,0 +1,32 @@
+.form-add-products {
+      width: 100%;
+      overflow: hidden;
+
+      form {
+            display: flex;
+            flex-direction: column;
+
+      }
+
+      .control:not(:last-child) {
+            margin-bottom: 25px;
+      }
+
+      label {
+            margin: 0 !important;
+      }
+
+      button {
+            border: none;
+            width: 200px;
+            margin: auto;
+            background-color: #000;
+            background-color: #E65F2B;
+            font-weight: 600;
+            font-size: 18px;
+
+            &:hover {
+                  background-color: #ec5013;
+            }
+      }
+}
