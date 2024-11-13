@@ -6,11 +6,14 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import QrScanner from 'react-qr-scanner'; // استخدام مكتبة react-qr-scanner
 
 export default function AddProducts() {
       const [validated, setValidated] = useState(false);
       const [inputValue, setInputValue] = useState('');
       const [serialNumber, setSerialNumber] = useState(''); // حالة جديدة للاحتفاظ بالقيمة المقروءة من QR
+      const [showQRScanner, setShowQRScanner] = useState(false); // حالة لإظهار أو إخفاء الكاميرا
+      const [cameraType, setCameraType] = useState('environment'); // حالة لتتبع نوع الكاميرا (environment = الكاميرا الخلفية, user = الكاميرا الأمامية)
 
       // التعامل مع التقديم
       const handleSubmit = (event) => {
@@ -66,7 +69,23 @@ export default function AddProducts() {
             setInputValue(event.target.value);
       };
 
+      // التعامل مع QR code الذي تم قراءته
+      const handleQRScan = (data) => {
+            if (data) {
+                  const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
+                  setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
+                  setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
+            }
+      };
 
+      const handleQRError = (err) => {
+            console.error(err);
+      };
+
+      // وظيفة لتبديل الكاميرا
+      const toggleCamera = () => {
+            setCameraType(cameraType === 'environment' ? 'user' : 'environment');
+      };
 
       return (
             <section className="add-products">
@@ -138,6 +157,7 @@ export default function AddProducts() {
                                                 placeholder="Serial Number"
                                                 value={serialNumber} // تم ربط القيمة هنا
                                                 onChange={(e) => setSerialNumber(e.target.value)} // تمكين التغيير اليدوي
+                                                onClick={() => setShowQRScanner(true)} // عند الضغط على الحقل نعرض الكاميرا
                                           />
                                     </Form.Group>
                               </Row>
@@ -145,6 +165,28 @@ export default function AddProducts() {
                               <Button type="submit">Submit form</Button>
                         </Form>
                   </section>
+
+                  {/* إظهار كاميرا QR عند الضغط على حقل Serial Number */}
+                  {showQRScanner && (
+                        <div className="qr-scanner">
+                              <QrScanner
+                                    delay={300}
+                                    style={{ width: '100%' }}
+                                    facingMode={cameraType} // تحديد الكاميرا استنادًا إلى الحالة
+                                    onError={handleQRError}
+                                    onScan={handleQRScan}
+                              />
+
+                              {/* زر تبديل الكاميرا */}
+                              <Button variant="secondary" onClick={toggleCamera}>
+                                    Switch to {cameraType === 'environment' ? 'Front' : 'Back'} Camera
+                              </Button>
+
+                              <Button variant="secondary" onClick={() => setShowQRScanner(false)}>
+                                    Close Scanner
+                              </Button>
+                        </div>
+                  )}
             </section>
       );
 }
