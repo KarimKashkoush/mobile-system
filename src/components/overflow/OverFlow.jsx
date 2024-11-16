@@ -1,12 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import "./overflow.css"
 import moment from "moment"
+import { useSelector } from "react-redux";
 export default function OverFlow() {
       const today = moment();
-
+      const products = useSelector((state) => state.products.products);
       return (
             <section className="OverFlow">
                   <section className="boxs">
+                        <section className="box">
+                              <FontAwesomeIcon icon="fa-solid fa-shop" />
+                              <p>No. products</p>
+                              <h2>{products.length}</h2>
+                        </section>
                         <section className="box">
                               <FontAwesomeIcon icon="fa-solid fa-sack-dollar" />
                               <p>Net Profit</p>
@@ -16,11 +22,6 @@ export default function OverFlow() {
                               <FontAwesomeIcon icon="fa-solid fa-shop-slash" />
                               <p>No. Sold</p>
                               <h2>12</h2>
-                        </section>
-                        <section className="box">
-                              <FontAwesomeIcon icon="fa-solid fa-shop" />
-                              <p>No. products</p>
-                              <h2>30</h2>
                         </section>
                         <section className="box">
                               <FontAwesomeIcon icon="fa-regular fa-calendar-days" />

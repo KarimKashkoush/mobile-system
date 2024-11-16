@@ -11,11 +11,9 @@ export default function ProductsList() {
       }, [dispatch]);
 
       const products = useSelector((state) => state.products.products);
-      const productArray = Object.values(products)
-      console.log(productArray)
-      const data = productArray.map((product, index) => (
+      const data = products.map((product, index) => (
             <tr key={index}>
-                  <td>{index++}</td>
+                  <td>{++index}</td>
                   <td>{product.productName}</td>
                   <td>{product.sellingPrice}</td>
                   <td>{product.serial}</td>

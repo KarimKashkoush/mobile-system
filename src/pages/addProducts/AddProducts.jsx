@@ -1,19 +1,22 @@
 import Header from "../../components/header/Header";
 import "./addproducts.css";
-
-import { useState } from 'react';
+import { insertProduct } from "../../store/products";
+import { useDispatch } from 'react-redux';
+import { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import QrScanner from 'react-qr-scanner'; // استخدام مكتبة react-qr-scanner
 
 export default function AddProducts() {
+      const dispatch = useDispatch();
       const [validated, setValidated] = useState(false);
       const [inputValue, setInputValue] = useState('');
-      const [serialNumber, setSerialNumber] = useState(''); // حالة جديدة للاحتفاظ بالقيمة المقروءة من QR
-      const [showQRScanner, setShowQRScanner] = useState(false); // حالة لإظهار أو إخفاء الكاميرا
-      const [cameraType, setCameraType] = useState('environment'); // حالة لتتبع نوع الكاميرا (environment = الكاميرا الخلفية, user = الكاميرا الأمامية)
+      const [memory, setMemory] = useState('');
+      const [battery, setBattery] = useState('');
+
+      const productNameREF = useRef(null);
+      const serialNumberREF = useRef(null);
 
       // التعامل مع التقديم
       const handleSubmit = (event) => {
@@ -24,6 +27,15 @@ export default function AddProducts() {
                   event.stopPropagation();
             }
             setValidated(true);
+
+            const data = {
+                  productName: productNameREF.current.value,
+                  memory: memory, // القيمة من الحالة
+                  battery: battery, // القيمة من الحالة
+                  serialNumber: serialNumberREF.current.value
+            };
+            dispatch(insertProduct(data))
+
       };
 
       // قائمة الخيارات الأصلية
@@ -69,24 +81,6 @@ export default function AddProducts() {
             setInputValue(event.target.value);
       };
 
-      // التعامل مع QR code الذي تم قراءته
-      const handleQRScan = (data) => {
-            if (data) {
-                  const scannedValue = typeof data === 'string' ? data : JSON.stringify(data);
-                  setSerialNumber(scannedValue); // وضع محتوى QR في خانة serial
-                  setShowQRScanner(false); // إغلاق كاميرا QR بعد القراءة
-            }
-      };
-
-      const handleQRError = (err) => {
-            console.error(err);
-      };
-
-      // وظيفة لتبديل الكاميرا
-      const toggleCamera = () => {
-            setCameraType(cameraType === 'environment' ? 'user' : 'environment');
-      };
-
       return (
             <section className="add-products">
                   <Header name={'Add Products'} />
@@ -102,6 +96,7 @@ export default function AddProducts() {
                                                 value={inputValue}
                                                 onChange={handleInputChange}
                                                 list="options-list" // ربط القائمة المنسدلة بـ input
+                                                ref={productNameREF}
                                           />
 
                                           <datalist id="options-list">
@@ -110,11 +105,14 @@ export default function AddProducts() {
                                                 ))}
                                           </datalist>
                                     </Form.Group>
-
                                     <Form.Group as={Col} md="6" className="control" controlId="validationCustom02">
                                           <Form.Label>Memory</Form.Label>
-                                          <Form.Select aria-label="Default select example">
-                                                <option selected>Memory</option>
+                                          <Form.Select
+                                                aria-label="Default select example"
+                                                value={memory} // اربط القيمة بالحالة
+                                                onChange={(e) => setMemory(e.target.value)} // تحديث الحالة
+                                          >
+                                                <option defaultValue>Memory</option>
                                                 <option value="64">64</option>
                                                 <option value="128">128</option>
                                                 <option value="256">256</option>
@@ -125,8 +123,12 @@ export default function AddProducts() {
 
                                     <Form.Group as={Col} md="6" className="control" controlId="validationCustom03">
                                           <Form.Label>Battery</Form.Label>
-                                          <Form.Select aria-label="Default select example">
-                                                <option selected>Battery</option>
+                                          <Form.Select
+                                                aria-label="Default select example"
+                                                value={battery} // اربط القيمة بالحالة
+                                                onChange={(e) => setBattery(e.target.value)} // تحديث الحالة
+                                          >
+                                                <option defaultValue>Battery</option>
                                                 <option value="64">New</option>
                                                 <option value="100">100</option>
                                                 <option value="99">99</option>
@@ -155,9 +157,7 @@ export default function AddProducts() {
                                                 required
                                                 type="text"
                                                 placeholder="Serial Number"
-                                                value={serialNumber} // تم ربط القيمة هنا
-                                                onChange={(e) => setSerialNumber(e.target.value)} // تمكين التغيير اليدوي
-                                                onClick={() => setShowQRScanner(true)} // عند الضغط على الحقل نعرض الكاميرا
+                                                ref={serialNumberREF}
                                           />
                                     </Form.Group>
                               </Row>
@@ -165,28 +165,6 @@ export default function AddProducts() {
                               <Button type="submit">Submit form</Button>
                         </Form>
                   </section>
-
-                  {/* إظهار كاميرا QR عند الضغط على حقل Serial Number */}
-                  {showQRScanner && (
-                        <div className="qr-scanner">
-                              <QrScanner
-                                    delay={300}
-                                    style={{ width: '100%' }}
-                                    facingMode={cameraType} // تحديد الكاميرا استنادًا إلى الحالة
-                                    onError={handleQRError}
-                                    onScan={handleQRScan}
-                              />
-
-                              {/* زر تبديل الكاميرا */}
-                              <Button variant="secondary" onClick={toggleCamera}>
-                                    Switch to {cameraType === 'environment' ? 'Front' : 'Back'} Camera
-                              </Button>
-
-                              <Button variant="secondary" onClick={() => setShowQRScanner(false)}>
-                                    Close Scanner
-                              </Button>
-                        </div>
-                  )}
             </section>
       );
 }
