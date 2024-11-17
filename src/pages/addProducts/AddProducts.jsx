@@ -17,6 +17,8 @@ export default function AddProducts() {
 
       const productNameREF = useRef(null);
       const serialNumberREF = useRef(null);
+      const buyingPriceREF = useRef(null);
+      const sellingPriceREF = useRef(null);
 
       // التعامل مع التقديم
       const handleSubmit = (event) => {
@@ -32,10 +34,17 @@ export default function AddProducts() {
                   productName: productNameREF.current.value,
                   memory: memory, // القيمة من الحالة
                   battery: battery, // القيمة من الحالة
-                  serialNumber: serialNumberREF.current.value
+                  serial: serialNumberREF.current.value,
+                  buyingPrice: buyingPriceREF.current.value,
+                  sellingPrice: sellingPriceREF.current.value,
             };
             dispatch(insertProduct(data))
-
+            buyingPriceREF.current.value = '';
+            sellingPriceREF.current.value = '';
+            productNameREF.current.value = '';
+            serialNumberREF.current.value = '';
+            setMemory('');
+            setBattery('');
       };
 
       // قائمة الخيارات الأصلية
@@ -105,6 +114,7 @@ export default function AddProducts() {
                                                 ))}
                                           </datalist>
                                     </Form.Group>
+
                                     <Form.Group as={Col} md="6" className="control" controlId="validationCustom02">
                                           <Form.Label>Memory</Form.Label>
                                           <Form.Select
@@ -112,7 +122,6 @@ export default function AddProducts() {
                                                 value={memory} // اربط القيمة بالحالة
                                                 onChange={(e) => setMemory(e.target.value)} // تحديث الحالة
                                           >
-                                                <option defaultValue>Memory</option>
                                                 <option value="64">64</option>
                                                 <option value="128">128</option>
                                                 <option value="256">256</option>
@@ -128,7 +137,6 @@ export default function AddProducts() {
                                                 value={battery} // اربط القيمة بالحالة
                                                 onChange={(e) => setBattery(e.target.value)} // تحديث الحالة
                                           >
-                                                <option defaultValue>Battery</option>
                                                 <option value="64">New</option>
                                                 <option value="100">100</option>
                                                 <option value="99">99</option>
@@ -158,6 +166,26 @@ export default function AddProducts() {
                                                 type="text"
                                                 placeholder="Serial Number"
                                                 ref={serialNumberREF}
+                                          />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom04">
+                                          <Form.Label>Buying Price</Form.Label>
+                                          <Form.Control
+                                                required
+                                                type="number"
+                                                placeholder="Buying Price"
+                                                ref={buyingPriceREF}
+                                          />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom04">
+                                          <Form.Label>Selling Price</Form.Label>
+                                          <Form.Control
+                                                required
+                                                type="number"
+                                                placeholder="Selling Price"
+                                                ref={sellingPriceREF}
                                           />
                                     </Form.Group>
                               </Row>

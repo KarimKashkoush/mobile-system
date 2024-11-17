@@ -17,6 +17,7 @@ export const getProducts = createAsyncThunk(
       }
 );
 
+// insert product to db
 export const insertProduct = createAsyncThunk('products/insertProduct', async (productData, thunkAPI) => {
       try {
             const res = await fetch("https://mobsystm-default-rtdb.firebaseio.com/products.json", {
@@ -32,6 +33,19 @@ export const insertProduct = createAsyncThunk('products/insertProduct', async (p
             return thunkAPI.rejectWithValue(error.message);
       }
 })
+
+// delete product from db
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (product, thunkAPI) => {
+      try {
+            await fetch(`https://mobsystm-default-rtdb.firebaseio.com/products/${product}.json`, {
+                  method: 'DELETE',
+            })
+            return product;
+      } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+      }
+}
+)
 
 const productsSlice = createSlice({
       name: "products",
@@ -49,7 +63,7 @@ const productsSlice = createSlice({
                   .addCase(getProducts.fulfilled, (state, action) => {
                         state.isLoading = false;
                         state.products = action.payload ? Object.entries(action.payload).map(([id, product]) => ({
-                              id, // تحويل الكائن إلى مصفوفة مع إضافة الـ id
+                              id,
                               ...product,
                         })) : [];
                         state.error = null;
@@ -75,6 +89,23 @@ const productsSlice = createSlice({
                         state.error = null;
                   })
                   .addCase(insertProduct.rejected, (state, action) => {
+                        state.isLoading = false;
+                        state.error = action.payload;
+                        console.log(action.payload)
+                  });
+
+            builder
+                  .addCase(deleteProduct.pending, (state) => {
+                        state.isLoading = true;
+                        state.error = null;
+                  })
+                  .addCase(deleteProduct.fulfilled, (state, action) => {
+                        state.isLoading = false;
+                        state.products = state.products.filter((product) => product.id !== action.payload);
+                        state.error = null;
+                        console.log(state.products)
+                  })
+                  .addCase(deleteProduct.rejected, (state, action) => {
                         state.isLoading = false;
                         state.error = action.payload;
                         console.log(action.payload)
