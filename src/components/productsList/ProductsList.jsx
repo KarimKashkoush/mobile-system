@@ -2,26 +2,43 @@ import "./productslist.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProducts, deleteProduct } from "../../store/products";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function ProductsList() {
       const dispatch = useDispatch();
+      const [searchTerm, setSearchTerm] = useState('');
+
       useEffect(() => {
             dispatch(getProducts());
       }, [dispatch]);
 
-      const deleteItem = (data) => {
-            const confirm = window.confirm('Are you sure you want to delete');
-            if (confirm) {
-                  dispatch(deleteProduct(data));
+      const deleteItem = async (id) => {
+            const result = await Swal.fire({
+                  title: "Are you sure?",
+                  text: "You won't be able to revert this!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!",
+            });
+
+            if (result.isConfirmed) {
+                  await dispatch(deleteProduct(id));
                   dispatch(getProducts());
+                  Swal.fire("Deleted!", "The product has been deleted.", "success");
             }
-      }
+      };
 
       const products = useSelector((state) => state.products.products);
-      const data = products.length > 0 ? products.map((product, index) => (
-            <tr key={index}>
-                  <td>{++index}</td>
+      const filteredProducts = products.filter((product) =>
+            product.serial.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      const data = filteredProducts.length > 0 ? filteredProducts.map((product, index) => (
+            <tr key={product.id}>
+                  <td>{index + 1}</td>
                   <td>{product.productName}</td>
                   <td>{product.sellingPrice}</td>
                   <td>{product.serial}</td>
@@ -31,7 +48,7 @@ export default function ProductsList() {
                         <button><FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => { deleteItem(product.id) }} /></button>
                   </td>
             </tr>
-      )) : <tr> <td colSpan="5">No products found</td> </tr>;
+      )) : <tr><td colSpan="5">No products found</td></tr>;
 
       return (
             <section className="products-list">
@@ -39,10 +56,23 @@ export default function ProductsList() {
                         <table>
                               <thead>
                                     <tr>
+                                          <th colSpan={5}>
+                                                <form action="">
+                                                      <i className="fa-solid fa-search"></i>
+                                                      <input
+                                                            type="text"
+                                                            placeholder="Search by Serial Number"
+                                                            value={searchTerm}
+                                                            onChange={(e) => setSearchTerm(e.target.value)}  // تحديث قيمة searchTerm
+                                                      />
+                                                </form>
+                                          </th>
+                                    </tr>
+                                    <tr>
                                           <th>#</th>
                                           <th>Product Name</th>
                                           <th>Price</th>
-                                          <th>code</th>
+                                          <th>Code</th>
                                           <th>Actions</th>
                                     </tr>
                               </thead>
@@ -52,5 +82,5 @@ export default function ProductsList() {
                         </table>
                   </section>
             </section>
-      )
+      );
 }
