@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const firebaseConfig = {
       apiKey: "AIzaSyDtMpimc12olO_XX9MEZhFyRG3SgXdRWyM",
@@ -18,4 +18,4 @@ const app = initializeApp(firebaseConfig);
 // الحصول على خدمة المصادقة
 const auth = getAuth(app);
 
-export { auth, createUserWithEmailAndPassword };
+export {auth, createUserWithEmailAndPassword, updateProfile };

@@ -1,53 +1,73 @@
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { auth } from '../../auth/firebase';  // استيراد auth من ملف firebase
-import { signInWithEmailAndPassword } from 'firebase/auth';  // استيراد دالة تسجيل الدخول
+import { auth } from '../../auth/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 export default function SignIn() {
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [error, setError] = useState('');
+      const navigate = useNavigate();
 
       const handleSubmit = async (e) => {
             e.preventDefault();
             try {
-                  await signInWithEmailAndPassword(auth, email, password);
-                  console.log('User signed in successfully!');
-                  // يمكنك إضافة إعادة التوجيه بعد تسجيل الدخول الناجح هنا
+                  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                  const user = userCredential.user;
+
+                  // تخزين بيانات المستخدم في localStorage
+                  localStorage.setItem('user', JSON.stringify(user));
+
+                  Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Signed in successfully!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                  });
+
+                  navigate('/dashboard');
             } catch (error) {
-                  setError(error.message);  // إظهار رسالة الخطأ إذا فشل تسجيل الدخول
+                  setError(error.message);
             }
       };
 
       return (
-            <div>
-                  <h2>Sign In</h2>
-                  {error && <p className="text-danger">{error}</p>} {/* عرض رسالة الخطأ */}
+            <section className='form signin'>
                   <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                              <Form.Label>Email address</Form.Label>
                               <Form.Control
                                     type="email"
                                     placeholder="Enter email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}  // تحديث قيمة البريد الإلكتروني
+                                    onChange={(e) => setEmail(e.target.value)} // تحديث قيمة البريد الإلكتروني
+                                    required
                               />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
-                              <Form.Label>Password</Form.Label>
                               <Form.Control
                                     type="password"
                                     placeholder="Password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}  // تحديث قيمة كلمة المرور
+                                    onChange={(e) => setPassword(e.target.value)} // تحديث قيمة كلمة المرور
+                                    required
                               />
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
                               Sign In
                         </Button>
+
+                        {error && <p className="text-danger">{error}</p>}
+
+                        <p className="mt-3">
+                              Already have an account? <Link to="/signup">Sign up</Link>
+                        </p>
                   </Form>
-            </div>
+            </section>
       );
 }

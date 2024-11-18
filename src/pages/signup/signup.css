@@ -1,0 +1,52 @@
+.form {
+      padding-inline: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+
+      form {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            width: 450px;
+            padding: 10px;
+            border-radius: 15px;
+
+            input {
+                  width: 100%;
+                  border: 1px solid #E65F2B;
+            }
+
+            button {
+                  width: 100%;
+                  background-color: #E65F2B;
+                  border: none;
+
+                  &:hover {
+                        background-color: #ed5215;
+                  }
+            }
+
+            p {
+                  margin-block: 20px;
+                  text-align: center;
+                  a {
+                        color: #E65F2B;
+                  }
+            }
+
+            .text-danger {
+                  display: block;
+                  text-align: center;
+                  padding-top: 20px;
+            }
+      }
+}
+
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+      border: none;
+      background-color: #ed5215;
+}

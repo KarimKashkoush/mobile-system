@@ -1,16 +1,21 @@
-import Header from "../../components/header/Header";
-import "./addproducts.css";
-import { insertProduct } from "../../store/products";
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useState, useRef } from 'react';
+import { insertProduct } from "../../store/products";
+import Swal from "sweetalert2";
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import Swal from "sweetalert2";
-
+import Header from "../../components/header/Header";
+import { useNavigate } from 'react-router-dom';
+import { auth } from "../../auth/firebase";
+import moment from "moment"
 export default function AddProducts() {
+      const today = moment();
+      
       const dispatch = useDispatch();
+      const navigate = useNavigate();
+
       const [validated, setValidated] = useState(false);
       const [inputValue, setInputValue] = useState('');
       const [memory, setMemory] = useState('');
@@ -21,14 +26,28 @@ export default function AddProducts() {
       const buyingPriceREF = useRef(null);
       const sellingPriceREF = useRef(null);
 
-      const handleSubmit = (event) => {
+      const [user, setUser] = useState(null);
+      useEffect(() => {
+            const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+                  if (currentUser) {
+                        setUser(currentUser);
+                  } else {
+                        setUser(null);
+                        navigate('/signin');
+                  }
+            });
+
+            return () => unsubscribe();
+      }, [navigate]);
+
+      const handleSubmit = async (event) => {
             event.preventDefault();
             const form = event.currentTarget;
 
             if (form.checkValidity() === false) {
                   event.stopPropagation();
-                  setValidated(true); // لإظهار الأخطاء
-                  return; // إيقاف العملية إذا كان هناك أخطاء
+                  setValidated(true);
+                  return;
             }
 
             const data = {
@@ -38,9 +57,11 @@ export default function AddProducts() {
                   serial: serialNumberREF.current.value,
                   buyingPrice: buyingPriceREF.current.value,
                   sellingPrice: sellingPriceREF.current.value,
+                  personalName: user.displayName,
+                  date: today.format('DD/MM/YYYY')
             };
 
-            dispatch(insertProduct(data));
+            await dispatch(insertProduct(data));
 
             Swal.fire({
                   position: "center-center",
@@ -50,7 +71,6 @@ export default function AddProducts() {
                   timer: 1500,
             });
 
-            // إعادة تعيين الحقول
             productNameREF.current.value = null;
             buyingPriceREF.current.value = null;
             sellingPriceREF.current.value = null;
@@ -58,7 +78,8 @@ export default function AddProducts() {
             setMemory('');
             setBattery('');
 
-            setValidated(true); // لتأكيد أن النموذج تم التحقق منه وإرساله
+            setValidated(true);
+
       };
 
 
@@ -116,7 +137,7 @@ export default function AddProducts() {
                                                 placeholder="Product Name..."
                                                 value={inputValue}
                                                 onChange={handleInputChange}
-                                                list="options-list" // ربط القائمة المنسدلة بـ input
+                                                list="options-list"
                                                 ref={productNameREF}
                                           />
 

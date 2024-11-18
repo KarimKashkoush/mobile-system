@@ -26,22 +26,6 @@ export default function SideBar() {
                                     Add Products
                               </NavLink>
                         </li>
-                        <li>
-                              <NavLink to="./about">
-                                    <span>
-                                          <i className="fa-solid fa-chart-line" />
-                                    </span>
-                                    Link
-                              </NavLink>
-                        </li>
-                        <li>
-                              <NavLink to="./contact">
-                                    <span>
-                                          <i className="fa-solid fa-chart-line" />
-                                    </span>
-                                    Link
-                              </NavLink>
-                        </li>
                   </ul>
             </aside>
       )

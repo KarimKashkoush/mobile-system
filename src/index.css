@@ -32,3 +32,8 @@ ul {
       margin-bottom: 0 !important;
       padding: 0 !important;
 }
+
+.form-control:focus,
+      .form-select:focus {
+            box-shadow: none !important;
+      }
