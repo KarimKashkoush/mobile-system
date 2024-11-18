@@ -1,5 +1,4 @@
 import "./productslist.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProducts, deleteProduct } from "../../store/products";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -43,8 +42,8 @@ export default function ProductsList() {
                   <td>{product.sellingPrice}</td>
                   <td>{product.serial}</td>
                   <td>
-                        <button>Sale</button>
-                        <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
+                        <button><i className="fa-solid fa-circle-dollar-to-slot"></i></button>
+                        <button><i className="fa-solid fa-pen-to-square" /></button>
                         <button onClick={() => { deleteItem(product.id) }} ><i className="fa-solid fa-trash"></i></button>
                   </td>
             </tr>
@@ -72,7 +71,7 @@ export default function ProductsList() {
                                           <th>#</th>
                                           <th>Product Name</th>
                                           <th>Price</th>
-                                          <th>Code</th>
+                                          <th>serial Number</th>
                                           <th>Actions</th>
                                     </tr>
                               </thead>

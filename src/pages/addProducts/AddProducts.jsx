@@ -21,41 +21,47 @@ export default function AddProducts() {
       const buyingPriceREF = useRef(null);
       const sellingPriceREF = useRef(null);
 
-      // التعامل مع التقديم
       const handleSubmit = (event) => {
             event.preventDefault();
             const form = event.currentTarget;
+
             if (form.checkValidity() === false) {
-                  event.preventDefault();
                   event.stopPropagation();
+                  setValidated(true); // لإظهار الأخطاء
+                  return; // إيقاف العملية إذا كان هناك أخطاء
             }
-            setValidated(true);
 
             const data = {
                   productName: productNameREF.current.value,
-                  memory: memory, // القيمة من الحالة
-                  battery: battery, // القيمة من الحالة
+                  memory: memory,
+                  battery: battery,
                   serial: serialNumberREF.current.value,
                   buyingPrice: buyingPriceREF.current.value,
                   sellingPrice: sellingPriceREF.current.value,
             };
-            dispatch(insertProduct(data))
+
+            dispatch(insertProduct(data));
+
             Swal.fire({
                   position: "center-center",
                   icon: "success",
                   title: "Your work has been saved",
                   showConfirmButton: false,
-                  timer: 1500
+                  timer: 1500,
             });
-            buyingPriceREF.current.value = '';
-            sellingPriceREF.current.value = '';
-            productNameREF.current.value = '';
-            serialNumberREF.current.value = '';
+
+            // إعادة تعيين الحقول
+            productNameREF.current.value = null;
+            buyingPriceREF.current.value = null;
+            sellingPriceREF.current.value = null;
+            serialNumberREF.current.value = null;
             setMemory('');
             setBattery('');
+
+            setValidated(true); // لتأكيد أن النموذج تم التحقق منه وإرساله
       };
 
-      // قائمة الخيارات الأصلية
+
       const options = [
             { id: 'option1', label: 'iphone 16' },
             { id: 'option2', label: 'iphone 16 mini' },
@@ -88,12 +94,10 @@ export default function AddProducts() {
             { id: 'option29', label: 'iphone xs max' },
       ];
 
-      // تصفية الخيارات بناءً على النص المدخل في input
       const filteredOptions = options.filter(option =>
             option.label.toLowerCase().includes(inputValue.toLowerCase())
       );
 
-      // التعامل مع التغيير في input
       const handleInputChange = (event) => {
             setInputValue(event.target.value);
       };
@@ -127,8 +131,8 @@ export default function AddProducts() {
                                           <Form.Label>Memory</Form.Label>
                                           <Form.Select
                                                 aria-label="Default select example"
-                                                value={memory} // اربط القيمة بالحالة
-                                                onChange={(e) => setMemory(e.target.value)} // تحديث الحالة
+                                                value={memory}
+                                                onChange={(e) => setMemory(e.target.value)}
                                           >
                                                 <option value="64">64</option>
                                                 <option value="128">128</option>
@@ -142,8 +146,8 @@ export default function AddProducts() {
                                           <Form.Label>Battery</Form.Label>
                                           <Form.Select
                                                 aria-label="Default select example"
-                                                value={battery} // اربط القيمة بالحالة
-                                                onChange={(e) => setBattery(e.target.value)} // تحديث الحالة
+                                                value={battery}
+                                                onChange={(e) => setBattery(e.target.value)}
                                           >
                                                 <option value="64">New</option>
                                                 <option value="100">100</option>
@@ -177,7 +181,7 @@ export default function AddProducts() {
                                           />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom04">
+                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom05">
                                           <Form.Label>Buying Price</Form.Label>
                                           <Form.Control
                                                 required
@@ -187,7 +191,7 @@ export default function AddProducts() {
                                           />
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom04">
+                                    <Form.Group as={Col} md="6" className="control" controlId="validationCustom06">
                                           <Form.Label>Selling Price</Form.Label>
                                           <Form.Control
                                                 required
