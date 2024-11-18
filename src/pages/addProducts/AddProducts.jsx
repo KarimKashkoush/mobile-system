@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import Swal from "sweetalert2";
 
 export default function AddProducts() {
       const dispatch = useDispatch();
@@ -39,6 +40,13 @@ export default function AddProducts() {
                   sellingPrice: sellingPriceREF.current.value,
             };
             dispatch(insertProduct(data))
+            Swal.fire({
+                  position: "center-center",
+                  icon: "success",
+                  title: "Your work has been saved",
+                  showConfirmButton: false,
+                  timer: 1500
+            });
             buyingPriceREF.current.value = '';
             sellingPriceREF.current.value = '';
             productNameREF.current.value = '';

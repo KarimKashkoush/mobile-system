@@ -45,7 +45,7 @@ export default function ProductsList() {
                   <td>
                         <button>Sale</button>
                         <button><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></button>
-                        <button><FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => { deleteItem(product.id) }} /></button>
+                        <button onClick={() => { deleteItem(product.id) }} ><i className="fa-solid fa-trash"></i></button>
                   </td>
             </tr>
       )) : <tr><td colSpan="5">No products found</td></tr>;
@@ -57,7 +57,7 @@ export default function ProductsList() {
                               <thead>
                                     <tr>
                                           <th colSpan={5}>
-                                                <form onSubmit={(e)=>{e.preventDefault()}}>
+                                                <form onSubmit={(e) => { e.preventDefault() }}>
                                                       <i className="fa-solid fa-search"></i>
                                                       <input
                                                             type="text"
