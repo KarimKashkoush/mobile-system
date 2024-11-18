@@ -17,6 +17,8 @@ import {
 } from "react-router-dom";
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import AddProducts from './pages/addProducts/AddProducts.jsx';
+import Signup from './pages/signup/Signup.jsx';
+import SignIn from './pages/signIn/SignIn.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/add", element: <AddProducts /> },
     ]
+  }, 
+  {
+    path: "/signup",
+    element: <Signup />
+  },
+  {
+    path: "/signin",
+    element: <SignIn />
   }
 ])
 

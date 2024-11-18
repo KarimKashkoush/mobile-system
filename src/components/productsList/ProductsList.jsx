@@ -57,7 +57,7 @@ export default function ProductsList() {
                               <thead>
                                     <tr>
                                           <th colSpan={5}>
-                                                <form action="">
+                                                <form onSubmit={(e)=>{e.preventDefault()}}>
                                                       <i className="fa-solid fa-search"></i>
                                                       <input
                                                             type="text"
