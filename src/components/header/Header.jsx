@@ -13,7 +13,7 @@ export default function Header({ name }) {
                   localStorage.removeItem('user'); 
                   navigate('/signin');      
             } catch (error) {
-                  console.error('فشل تسجيل الخروج:', error.message);
+                  console.error(error.message);
             }
       };
 

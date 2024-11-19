@@ -3,6 +3,7 @@ import { getProducts, deleteProduct } from "../../store/products";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { saleProduct } from '../../store/products';
 
 export default function ProductsList() {
       const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function ProductsList() {
                   <td>{product.sellingPrice}</td>
                   <td>{product.serial}</td>
                   <td>
-                        <button><i className="fa-solid fa-circle-dollar-to-slot"></i></button>
+                        <button onClick={() => { dispatch(saleProduct(product.id)) }}><i className="fa-solid fa-circle-dollar-to-slot"></i></button>
                         <button><i className="fa-solid fa-pen-to-square" /></button>
                         <button onClick={() => { deleteItem(product.id) }} ><i className="fa-solid fa-trash"></i></button>
                   </td>

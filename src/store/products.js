@@ -1,4 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { auth } from "../auth/firebase"
+
+import moment from "moment";
+const now = moment();
 
 // get products from db
 export const getProducts = createAsyncThunk(
@@ -46,6 +50,46 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
       }
 }
 )
+
+// Sale products from db 
+export const saleProduct = createAsyncThunk('products/saleProduct', async (productId, thunkAPI) => {
+      try {
+            // الخطوة 1: جلب بيانات المنتج المبيع
+            const res = await fetch(`https://mobsystm-default-rtdb.firebaseio.com/products/${productId}.json`);
+            if (!res.ok) {
+                  throw new Error('Failed to fetch product');
+            }
+            const productData = await res.json();
+
+            // إضافة الطابع الزمني (التاريخ الحالي)
+            const saleData = {
+                  ...productData,
+                  soldAt: now.format("DD/MM/YYYY - HH:mm"),
+                  userName : auth.currentUser.displayName,
+            };
+
+            // الخطوة 2: إضافته إلى قائمة المبيعات
+            await fetch("https://mobsystm-default-rtdb.firebaseio.com/sales.json", {
+                  method: 'POST',
+                  body: JSON.stringify(saleData),
+                  headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                  },
+            });
+
+            // الخطوة 3: حذف المنتج من قائمة المنتجات
+            await fetch(`https://mobsystm-default-rtdb.firebaseio.com/products/${productId}.json`, {
+                  method: 'DELETE',
+            });
+
+            // إعادة المنتج المبيع للتحديث في الـ state
+            return { id: productId, saleData };
+      } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+      }
+});
+
+
 
 const productsSlice = createSlice({
       name: "products",
@@ -110,6 +154,24 @@ const productsSlice = createSlice({
                         state.error = action.payload;
                         console.log(action.payload)
                   });
+
+            builder
+                  .addCase(saleProduct.pending, (state) => {
+                        state.isLoading = true;
+                        state.error = null;
+                  })
+                  .addCase(saleProduct.fulfilled, (state, action) => {
+                        state.isLoading = false;
+                        const { id } = action.payload;
+                        state.products = state.products.filter((product) => product.id !== id); // إزالة المنتج المبيع
+                        state.error = null;
+                  })
+                  .addCase(saleProduct.rejected, (state, action) => {
+                        state.isLoading = false;
+                        state.error = action.payload;
+                        console.log(action.payload);
+                  });
+
       },
 });
 

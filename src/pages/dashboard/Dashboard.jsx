@@ -1,12 +1,15 @@
+// src/pages/Dashboard.js
 import { useEffect, useState } from 'react';
 import Header from "../../components/header/Header";
 import OverFlow from "../../components/overflow/OverFlow";
-import ProductsList from "../../components/productsList/ProductsList";
 import { auth } from "../../auth/firebase";
 import { useNavigate } from 'react-router-dom';
+import SalesList from '../../components/saleList/SaleList';
+import SalesFilter from '../../components/saleList/SalesFilter'; // استيراد الفلتر
 
 export default function Dashboard() {
       const [user, setUser] = useState(null);
+      const [filterDays, setFilterDays] = useState(30); // الحالة الخاصة بالفلتر
       const navigate = useNavigate();
 
       useEffect(() => {
@@ -19,15 +22,15 @@ export default function Dashboard() {
                   }
             });
 
-            // التأكد من إلغاء الاشتراك عند التدمير (عند إغلاق الصفحة أو التنقل إلى صفحة أخرى)
             return () => unsubscribe();
       }, [navigate]);
 
       return (
             <div>
                   <Header name={"Dashboard"} />
-                  <OverFlow />
-                  <ProductsList />
+                  <SalesFilter filterDays={filterDays} setFilterDays={setFilterDays} /> {/* تمرير الفلتر */}
+                  <OverFlow filterDays={filterDays} /> {/* تمرير الفلتر */}
+                  <SalesList filterDays={filterDays} /> {/* تمرير الفلتر */}
             </div>
       );
 }

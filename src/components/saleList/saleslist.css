@@ -1,0 +1,10 @@
+.sales-filter {
+      padding-bottom: 30px;
+      select {
+            width: 120px;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 100px;
+            outline: none;
+      }
+}

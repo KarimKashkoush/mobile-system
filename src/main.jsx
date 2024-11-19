@@ -19,16 +19,18 @@ import Dashboard from './pages/dashboard/Dashboard.jsx';
 import AddProducts from './pages/addProducts/AddProducts.jsx';
 import Signup from './pages/signup/Signup.jsx';
 import SignIn from './pages/signIn/SignIn.jsx';
+import Home from './pages/Home/Home.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RouteLayout />,
     children: [
+      { index: true, element: <Home /> },
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/add", element: <AddProducts /> },
     ]
-  }, 
+  },
   {
     path: "/signup",
     element: <Signup />
